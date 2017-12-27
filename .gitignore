@@ -8,3 +8,5 @@ debian/*.debhelper.log
 debian/*.substvars
 .excludes
 *.user
+.clickable
+build/*

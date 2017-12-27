@@ -4,6 +4,7 @@ find_program(INTLTOOL_MERGE intltool-merge)
 find_program(INTLTOOL_EXTRACT intltool-extract)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-permissive -pedantic -Wall -Wextra -fPIC")
 
 # Standard install paths
@@ -82,42 +83,6 @@ if(CLICK_MODE)
     add_custom_target(com_ubuntu_calendar_CLICKFiles ALL SOURCES ${CLICK_FILES})
 
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json filemanager.apparmor ${CONTENT_HUB_JSON} DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-        set(UPSTREAM_LIBS_DIR ${CMAKE_BINARY_DIR}/upstream-libs)
-
-    #grab dependencies
-    set(GET_CLICK_DEPS_TOOL ${CMAKE_SOURCE_DIR}/get-click-deps)
-    set(DEPS_MANIFEST ${CMAKE_CURRENT_SOURCE_DIR}/filemanager-libs.json)
-    MESSAGE("Grabbing upstream libs to ${UPSTREAM_LIBS_DIR}")
-
-    get_filename_component(BLD_CONFIGURATION_NAME ${CMAKE_BINARY_DIR} NAME)
-    set(UPSTREAM_CACHE $ENV{HOME}/dev/upstream-libs-filemanager/${BLD_CONFIGURATION_NAME})
-    MESSAGE("Upstream libs cache path: ${UPSTREAM_CACHE}")
-
-    if(EXISTS "${UPSTREAM_CACHE}")
-      MESSAGE("Upstream libs cache exists.")
-      file(COPY ${UPSTREAM_CACHE}/upstream-libs/ DESTINATION ${UPSTREAM_LIBS_DIR} PATTERN * )
-    else()
-      MESSAGE("Cache miss, downloading from network.")
-      file(MAKE_DIRECTORY ${UPSTREAM_LIBS_DIR})
-      file(MAKE_DIRECTORY ${UPSTREAM_CACHE})
-      execute_process(
-        COMMAND ${GET_CLICK_DEPS_TOOL} -d ${DEPS_MANIFEST} ${CLICK_ARCH} ${UPSTREAM_LIBS_DIR}
-      )
-      # Cache for next usage
-      file(COPY ${UPSTREAM_LIBS_DIR} DESTINATION ${UPSTREAM_CACHE} )
-    endif()
-    MESSAGE("Installing upstream libs from ${CMAKE_CURRENT_BINARY_DIR}/upstream-libs/usr/lib/${ARCH_TRIPLET}/ to ${DATA_DIR}lib/${ARCH_TRIPLET}")
-    file(GLOB_RECURSE UPSTREAM_LIBS "${CMAKE_CURRENT_BINARY_DIR}/upstream-libs/usr/lib/${ARCH_TRIPLET}/*")
-    foreach(ITEM ${UPSTREAM_LIBS})
-       IF( IS_DIRECTORY "${ITEM}" )
-          LIST( APPEND DIRS_TO_DEPLOY "${ITEM}" )
-       ELSE()
-          LIST( APPEND FILES_TO_DEPLOY "${ITEM}" )
-       ENDIF()
-    endforeach()
-    MESSAGE("Following files to install:- ${FILES_TO_DEPLOY}")
-    INSTALL( FILES ${FILES_TO_DEPLOY} DESTINATION ${DATA_DIR}lib/${ARCH_TRIPLET} )
 else(CLICK_MODE)
     execute_process(
         COMMAND qmake -query QT_INSTALL_QML

@@ -1,0 +1,8 @@
+{
+  "template": "cmake",
+  "sdk": "15.04-filemanager",
+  "postbuild": "get-click-deps -d filemanager-libs.json armhf build",
+  "dependencies": [
+    "libpam0g-dev"
+  ]     
+}
