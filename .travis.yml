@@ -4,9 +4,10 @@ sudo: required
 dist: trusty
 
 before_install:
-  - sudo add-apt-repository ppa:bhdouglass/clickable -y
-  - sudo apt-get update -q
-  - sudo apt-get install clickable -y
+  - sudo apt-get -qq update
+  - sudo apt-get install -y docker.io android-tools-adb python-cookiecutter
+  - wget https://github.com/bhdouglass/clickable/releases/download/v3.0.0/clickable_3.0.0_all.deb
+  - sudo dpkg -i clickable_3.0.0_all.deb
 
 script:
 - "clickable init"
