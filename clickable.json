@@ -1,7 +1,7 @@
 {
   "template": "cmake",
   "sdk": "15.04-filemanager",
-  "postbuild": "get-click-deps -d filemanager-libs.json armhf build",
+  "postbuild": "../get-click-deps -d ../filemanager-libs.json armhf ./tmp && mv ./tmp/usr/lib/arm-linux-gnueabihf/* ./tmp/lib/arm-linux-gnueabihf",
   "dependencies": [
     "libpam0g-dev"
   ]     
