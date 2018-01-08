@@ -16,6 +16,8 @@ script:
 deploy:
   # Push new packages on GitHub releases
   - provider: releases
+    on:
+      all_branches: true
     skip_cleanup: true
     overwrite: true
     file_glob: true
