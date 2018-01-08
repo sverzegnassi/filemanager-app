@@ -10,7 +10,7 @@ before_install:
   - sudo dpkg -i clickable_3.0.0_all.deb
 
 script:
-- "clickable init"
+- "clickable setup-docker"
 - "clickable clean build click-build"
 
 deploy:
