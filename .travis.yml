@@ -4,24 +4,22 @@ sudo: required
 dist: trusty
 
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y docker.io android-tools-adb python-cookiecutter
-  - wget https://github.com/bhdouglass/clickable/releases/download/v3.0.0/clickable_3.0.0_all.deb
-  - sudo dpkg -i clickable_3.0.0_all.deb
+- sudo apt-get -qq update
+- sudo apt-get install -y docker.io android-tools-adb python-cookiecutter
+- wget https://github.com/bhdouglass/clickable/releases/download/v3.0.0/clickable_3.0.0_all.deb
+- sudo dpkg -i clickable_3.0.0_all.deb
 
 script:
-- "clickable setup-docker"
-- "clickable clean build click-build"
+- clickable setup-docker
+- clickable clean build click-build
 
 deploy:
-  # Push new packages on GitHub releases
-  - provider: releases
-    on:
-      all_branches: true
-    skip_cleanup: true
-    overwrite: true
-    file_glob: true
-    file: ./build/*.click
-    api_key:
-      secure: Rjsc+IT9Y+GkS276Eq1SCuVFu7L9bQHSl/hQ9YXhc52fZKZ42Eu0Ko3BpVbOoP0vONLTLXhaydJ5rpks1jL7A16UkITSGe5ecro8LLJ28YO1/4/ofNPaOerF+X/Nemq4ei9TFrWKWlC7UdO9DxxlU3kVsoylfnbb9KLPdq9cS8vJv52fHSEDDpvl+ix/wnAS0sz7o80cLnSV0ZFfJ5/WRE3z04GlcQXMk8e/2dq2t/EA0Q77zcA08D+43XoB+xXSEN7Fh6DTVyX1UFd/SvXj6HWlGA1OyiRdQUKOZFgIqn6041G66Vt7eztR4BAOV+NXsDevZvo53br/DDR/NUASWL7hgXCfIJGZ+vjy81DlArlSvVH5Re3MJWUOZ9R/ojpxIOV8HepIdFM84g19+y2AnGVhXBUwuHPjmqztUM550+Gf2NcmBjqZTjQ6cS4gyxqwacHAwTiuQTYuGCt2B6D5k2HiJPt8M4/qYK23eubFsiGaxVAVHvRzsYZ0GwWVGlMofDskEHuQb9nV3qX28gzFpfT5MhAC+xOomYCMlD6oxxS5VxDfb17i8Vd1tlR64023RzXGkJ0/p6ZTQJ1KoIacyDvx+LQQIzDkQp+jiz7xP1pEHvwmNI59KAuPbMW6IEc6penkWoqQs7bEmm6yzamp7jPUYN+UrOcTgfU9eEwlh50=
-
+  provider: releases
+  api_key:
+    secure: Vj51p2ViawPDa7EN19hdFe5T6e/ifWPAS3UvaTux3N5ULUCeg68fRtYA/oWFnQWVQTkeEh58UX710KqwgW+5o9StnlpjItizTLcYXOkPGZmgwFzIOyO7r2drPbCpSn+rQQFiBZ9Oi+wJtONm7NUgZJsHU/I4poRkfRQIdGTVgkFeYaC36T+QtANM0yE6LQiw/1VmGEsM2qse3y9qa5qoE2LfGABBLgwxUTYMVwiBOM57+mLY2iCthwtgUksc0Qh221uOInSm4OF/cJnxX+Zw2ArgsvhCvUKBnTmae9kJA7OGeq33XC74vypPFN1UcA47oDOmaDFVvxA+JDAUeyCZgdsblnShPDBuHgRfyl0KT1brLBto/pxlMBkJbjQVODsjcSWN+TaBIzVI58KUUwwVTToKek0oGCXEpFKGwUBkjf/ZriU2pH0l2jpmCLwLxfs6wpXudIVd1BAMHIC/ev4/CF3C3CyU00VCCnenOX84CAJKq0ruOmp5XRzCOeJXCRo7iKXGM1sHzjIiGaZTi+XjZ7ADVI/jViB9msU2JgRYzl4xuejQ+IZikwLbwT+XhuT1jdwCmEi3SHQ9ONE70vi1iLg5O17rwmBxPM/NhdgR0RcIYnyWZppHhqWTB5RyJ9rMfJzeVBMO6PAy3h8bz1ybJBL14RIZuLJswljhwviIZak=
+  skip_cleanup: true
+  overwrite: true
+  file_glob: true
+  file: "./build/*.click"
+  on:
+    all_branches: true
