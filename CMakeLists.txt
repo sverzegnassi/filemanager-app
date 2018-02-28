@@ -50,7 +50,7 @@ if(CLICK_MODE)
         )
     endif(NOT GIT_REVNO)
     if(NOT GIT_REVNO)
-        set(GIT_REVNO "latest")
+        set(GIT_REVNO "gitlatestrevno")
     endif(NOT GIT_REVNO)
 
     if(NOT GIT_HASH)
@@ -62,7 +62,7 @@ if(CLICK_MODE)
         )
     endif(NOT GIT_HASH)
     if(NOT GIT_HASH)
-        set(GIT_HASH "unknownhash")
+        set(GIT_HASH "gitunknownhash")
     endif(NOT GIT_HASH)
 
     #query the target architecture
@@ -83,30 +83,12 @@ if(CLICK_MODE)
 
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json filemanager.apparmor ${CONTENT_HUB_JSON} DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-        set(UPSTREAM_LIBS_DIR ${CMAKE_BINARY_DIR}/upstream-libs)
+    set(UPSTREAM_LIBS_DIR ${CMAKE_BINARY_DIR}/upstream-libs)
 
     #grab dependencies
     set(GET_CLICK_DEPS_TOOL ${CMAKE_SOURCE_DIR}/get-click-deps)
     set(DEPS_MANIFEST ${CMAKE_CURRENT_SOURCE_DIR}/filemanager-libs.json)
-    MESSAGE("Grabbing upstream libs to ${UPSTREAM_LIBS_DIR}")
 
-    get_filename_component(BLD_CONFIGURATION_NAME ${CMAKE_BINARY_DIR} NAME)
-    set(UPSTREAM_CACHE $ENV{HOME}/dev/upstream-libs-filemanager/${BLD_CONFIGURATION_NAME})
-    MESSAGE("Upstream libs cache path: ${UPSTREAM_CACHE}")
-
-    if(EXISTS "${UPSTREAM_CACHE}")
-      MESSAGE("Upstream libs cache exists.")
-      file(COPY ${UPSTREAM_CACHE}/upstream-libs/ DESTINATION ${UPSTREAM_LIBS_DIR} PATTERN * )
-    else()
-      MESSAGE("Cache miss, downloading from network.")
-      file(MAKE_DIRECTORY ${UPSTREAM_LIBS_DIR})
-      file(MAKE_DIRECTORY ${UPSTREAM_CACHE})
-      execute_process(
-        COMMAND ${GET_CLICK_DEPS_TOOL} -d ${DEPS_MANIFEST} ${CLICK_ARCH} ${UPSTREAM_LIBS_DIR}
-      )
-      # Cache for next usage
-      file(COPY ${UPSTREAM_LIBS_DIR} DESTINATION ${UPSTREAM_CACHE} )
-    endif()
     MESSAGE("Installing upstream libs from ${CMAKE_CURRENT_BINARY_DIR}/upstream-libs/usr/lib/${ARCH_TRIPLET}/ to ${DATA_DIR}lib/${ARCH_TRIPLET}")
     file(GLOB_RECURSE UPSTREAM_LIBS "${CMAKE_CURRENT_BINARY_DIR}/upstream-libs/usr/lib/${ARCH_TRIPLET}/*")
     foreach(ITEM ${UPSTREAM_LIBS})
